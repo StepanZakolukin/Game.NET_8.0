@@ -1,17 +1,18 @@
+using WindowsForm.Model;
+using WindowsForm.Model.Map;
+
+
 namespace Shooter
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            Application.Run(new MyForm(
+                new GameModel(new Playground(0),
+                new WindowsForm.View.InfoAboutTheLevel(new[] { "0", "false", "1", "1", "1", "1", "1", "1" }))));
         }
     }
 }
