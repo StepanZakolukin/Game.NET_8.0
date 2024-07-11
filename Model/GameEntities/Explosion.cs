@@ -1,11 +1,8 @@
-﻿using System.Drawing;
-
-namespace WindowsForm.Model.GameEntities
+﻿namespace WindowsForm.Model.GameEntities
 {
     public class Explosion : GameObjects
     {
-        public static readonly Image[] Pictures = new Image[]
-        {
+        public static readonly Image[] Pictures = [
             Image.FromFile(@"Images\Explosion2.png"),
             Image.FromFile(@"Images\Explosion3.png"),
             Image.FromFile(@"Images\Explosion4.png"),
@@ -13,7 +10,7 @@ namespace WindowsForm.Model.GameEntities
             Image.FromFile(@"Images\Explosion6.png"),
             Image.FromFile(@"Images\Explosion7.png"),
             Image.FromFile(@"Images\Explosion8.png")
-        };
+        ];
 
         public Explosion(Point location, string pathToTheFile = @"Images\Explosion1.png", int health = 8, int renderingPriority = 3, int priority = 0, int angleInDegrees = 0) : base(location, pathToTheFile, health, renderingPriority, priority, angleInDegrees)
         {

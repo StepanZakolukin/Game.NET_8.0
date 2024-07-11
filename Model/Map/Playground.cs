@@ -14,7 +14,7 @@ namespace WindowsForm.Model.Map
             Height = 17;
             Width = 32;
 
-            Maps = new[] { () => GeneratingMazes.GenerateAMaze(Width, Height), GetAMapFromAFile };
+            Maps = [ () => GeneratingMazes.GenerateAMaze(Width, Height), GetAMapFromAFile ];
 
             CreateMap(Maps[levelNumber % 2]());
         }
@@ -41,7 +41,7 @@ namespace WindowsForm.Model.Map
             for (var y = 0; y < Height; y++)
                 for (var x = 0; x < Width; x++)
                 {
-                    Map[x, y] = new List<GameObjects>();
+                    Map[x, y] = [];
 
                     if (array[x, y] == "0") Map[x, y].Add(new Stone(new Point(x, y)));
                     else Map[x, y].Add(new Wall(new Point(x, y)));

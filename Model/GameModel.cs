@@ -23,7 +23,7 @@ namespace WindowsForm.Model
             var playerLocation = FindAPositionToCreateAnOject();
             Map[playerLocation].Add(new Player(new Random().Next(1, 5) * 90, playerLocation));
             Player = (Player)Map[playerLocation].Last();
-            ArmyOfBots = new List<Bot>();
+            ArmyOfBots = [];
             CreateBots();
             var firstAidKit = new FirstAid(FindAPositionToCreateAnOject());
             Map[firstAidKit.Location].Add(firstAidKit);
@@ -47,7 +47,7 @@ namespace WindowsForm.Model
 
             for (var x = 0; x < Map.Width; x++)
                 for (var y = 0; y < Map.Height; y++)
-                    creatures[x, y] = new();
+                    creatures[x, y] = [];
 
             for (var x = 0; x < Map.Width; x++)
                 for (var y = 0; y < Map.Height; y++)
@@ -93,7 +93,7 @@ namespace WindowsForm.Model
 
             for (var j = 1; j < sortedСreatures.Count; j++)
                 for (var i = 0; i < sortedСreatures.Count - j; i++)
-                    if (sortedСreatures[sortedСreatures.Count - j].DeadInConflict(sortedСreatures[i]))
+                    if (sortedСreatures[^1].DeadInConflict(sortedСreatures[i]))
                     {
                         sortedСreatures[i].DeductDamage();
                         if (sortedСreatures[i].DeadInConflict(sortedСreatures[sortedСreatures.Count - j]))

@@ -1,4 +1,4 @@
-﻿namespace Shooter
+﻿namespace Window
 {
     partial class MyForm
     {
@@ -28,10 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            SuspendLayout();
+            // 
+            // MyForm
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Name = "MyForm";
+            Text = "Защитник Брестской крепости";
+            ResumeLayout(false);
         }
 
         #endregion

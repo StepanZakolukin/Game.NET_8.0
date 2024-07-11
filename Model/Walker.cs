@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace WindowsForm.Model
+﻿namespace WindowsForm.Model
 {
     public static class Walker
     {
-        public static Dictionary<int, Point> MovingForwad = new Dictionary<int, Point>()
+        public readonly static Dictionary<int, Point> MovingForwad = new Dictionary<int, Point>()
         {
             [0] = new Point(1, 0),
             [90] = new Point(0, 1),
@@ -12,6 +10,6 @@ namespace WindowsForm.Model
             [270] = new Point(0, -1)
         };
 
-        public static Point[] OfSets = new Point[] { new Point(0, 1), new Point(0, -1), new Point(-1, 0), new Point(1, 0) };
+        public readonly static Point[] OfSets = [ new Point(0, 1), new Point(0, -1), new Point(-1, 0), new Point(1, 0) ];
     }
 }

@@ -4,7 +4,7 @@ using WindowsForm.View;
 using Point = System.Drawing.Point;
 
 
-namespace Shooter
+namespace Window
 {
     public partial class MyForm : Form
     {
@@ -52,11 +52,9 @@ namespace Shooter
 
             BackColor = Color.Black;
             WindowState = FormWindowState.Maximized;
-            Text = "Защитник Брестской крепости";
 
             OpenTheMainMenu();
 
-            SizeChanged += UpdateFieldValues;
             Load += (sender, args) => OnSizeChanged(EventArgs.Empty);
             FormClosing += SaveTheGameResults;
             InitializeComponent();
@@ -81,10 +79,11 @@ namespace Shooter
 
             Controls.Add(playButton);
 
-            RecalculateTheDimensionsInTheMainMenu("", new EventArgs());
+            SizeChanged += UpdateFieldValues;
+            SizeChanged += RecalculateTheDimensionsInTheMainMenu;
+            RecalculateTheDimensionsInTheMainMenu(null, EventArgs.Empty);
 
             playButton.Click += LaunchTheLevelSelectionWindow;
-            SizeChanged += RecalculateTheDimensionsInTheMainMenu;
         }
 
         void CloseTheMainMenu()
@@ -108,7 +107,7 @@ namespace Shooter
             playButton.Size = new Size((int)(6 * sizeOfTheGridCell), (int)(2 * sizeOfTheGridCell));
             playButton.FlatAppearance.BorderSize = (int)sizeOfTheGridCell / 7;
 
-            playButton.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell, 1), FontStyle.Bold);
+            playButton.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell * 0.75f, 1), FontStyle.Bold);
         }
         #endregion
 
@@ -206,10 +205,10 @@ namespace Shooter
                         (int)(startingPoint.X + buttonSize.Width * column + column * distanceBetweenTheButtons),
                         (int)(startingPoint.Y + buttonSize.Height * row + row * distanceBetweenTheButtons));
                     LevelButtons[row, column].Size = buttonSize;
-                    LevelButtons[row, column].Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.5f, 1), FontStyle.Bold);
+                    LevelButtons[row, column].Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.9f, 1), FontStyle.Bold);
                 }
 
-            gameInformationButton.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.8f, 1), FontStyle.Bold);
+            gameInformationButton.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.7f, 1), FontStyle.Bold);
             gameInformationButton.Location = new Point((int)(ClientSize.Width - 1.2 * sizeOfTheGridCell), 0);
             gameInformationButton.Size = new Size((int)(1.2 * sizeOfTheGridCell), (int)(1.2 * sizeOfTheGridCell));
         }
@@ -267,7 +266,7 @@ namespace Shooter
             CreateGamePanelButtons();
             pauseButton.Enabled = false;
             exitButton.Enabled = false;
-            RecalculateTheValuesOfTheGameButtons("", new EventArgs());
+            RecalculateTheValuesOfTheGameButtons(null, EventArgs.Empty);
             SizeChanged += RecalculateTheValuesOfTheGameButtons;
 
             model = new GameModel(new WindowsForm.Model.Map.Playground(level),
@@ -402,12 +401,11 @@ namespace Shooter
 
             DrawTheText(graphics, $"Уровень {model.InfoAboutTheLevel.Level}", new RectangleF(
                 new PointF(initialCoordinate.X + 9f * sizeOfTheGridCell, initialCoordinate.Y + sizeOfTheGridCell * 6f),
-                new SizeF(14 * sizeOfTheGridCell, sizeOfTheGridCell * 2.5f)), Brushes.LightGoldenrodYellow,
-                new StringFormat() { Alignment = StringAlignment.Center }, 1.5f * sizeOfTheGridCell);
+                new SizeF(14 * sizeOfTheGridCell, sizeOfTheGridCell * 2.5f)), 1.2f * sizeOfTheGridCell, StringAlignment.Center, FontStyle.Bold);
 
-            graphics.DrawString("Кликните по экрану, чтобы начать игру.", new Font("Courier New", Math.Max(sizeOfTheGridCell / 2, 1)), Brushes.LightGoldenrodYellow, new RectangleF(
+            DrawTheText(graphics, "Кликните по экрану, чтобы начать игру.", new RectangleF(
                 new PointF(initialCoordinate.X + 6f * sizeOfTheGridCell, initialCoordinate.Y + sizeOfTheGridCell * 15f),
-                new SizeF(20 * sizeOfTheGridCell, sizeOfTheGridCell * 2.5f)), new StringFormat() { Alignment = StringAlignment.Center });
+                new SizeF(20 * sizeOfTheGridCell, sizeOfTheGridCell * 2.5f)), 0.8f * sizeOfTheGridCell / 2, StringAlignment.Center);
         }
 
         void DrawAGamePanel(object sender, PaintEventArgs e)
@@ -432,24 +430,19 @@ namespace Shooter
         {
             var strings = new string[] { "", "0" };
 
-            DrawTheText(graphics,
-                $"0{model.AmountOfTimeUntilTheEndOfTheRound / 60}:" + strings[2 - (model.AmountOfTimeUntilTheEndOfTheRound % 60).ToString().Length] + $"{model.AmountOfTimeUntilTheEndOfTheRound % 60}",
-                new RectangleF(
-                    new PointF(initialCoordinate.X + 8.8f * sizeOfTheGridCell, initialCoordinate.Y - sizeOfTheGridCell / 2 * 1.34f),
-                    new SizeF(2.5f * sizeOfTheGridCell, sizeOfTheGridCell)),
-                Brushes.LightGoldenrodYellow, new StringFormat(), sizeOfTheGridCell / 2);
+            DrawTheText(graphics, $"0{model.AmountOfTimeUntilTheEndOfTheRound / 60}:" + strings[2 - (model.AmountOfTimeUntilTheEndOfTheRound % 60).ToString().Length] + $"{model.AmountOfTimeUntilTheEndOfTheRound % 60}",
+                new RectangleF(new PointF(initialCoordinate.X + 8.8f * sizeOfTheGridCell, initialCoordinate.Y - sizeOfTheGridCell / 2 * 1.34f),
+                    new SizeF(2.5f * sizeOfTheGridCell, sizeOfTheGridCell)), sizeOfTheGridCell / 2.5f);
 
             DrawTheText(graphics, $"Уровень: {model.InfoAboutTheLevel.Level}",
-                new RectangleF(
-                    new PointF(initialCoordinate.X + sizeOfTheGridCell * 24f, initialCoordinate.Y - sizeOfTheGridCell / 2 * 1.34f),
-                    new SizeF(5f * sizeOfTheGridCell, sizeOfTheGridCell)), Brushes.LightGoldenrodYellow, new StringFormat()
-                    { Alignment = StringAlignment.Center }, sizeOfTheGridCell / 2);
+                new RectangleF(new PointF(initialCoordinate.X + sizeOfTheGridCell * 24f, initialCoordinate.Y - sizeOfTheGridCell / 2 * 1.34f),
+                    new SizeF(5f * sizeOfTheGridCell, sizeOfTheGridCell)), sizeOfTheGridCell / 2.5f,
+                StringAlignment.Center);
 
             DrawTheText(graphics, $"Счёт: {model.NumberOfBotsDestroyed}",
-                new RectangleF(
-                    new PointF(initialCoordinate.X + 14.9f * sizeOfTheGridCell, initialCoordinate.Y - sizeOfTheGridCell / 2 * 1.34f),
-                    new SizeF(4f * sizeOfTheGridCell, sizeOfTheGridCell)),
-                Brushes.LightGoldenrodYellow, new StringFormat() { Alignment = StringAlignment.Far }, sizeOfTheGridCell / 2);
+                new RectangleF(new PointF(initialCoordinate.X + 14.9f * sizeOfTheGridCell, initialCoordinate.Y - sizeOfTheGridCell / 2 * 1.34f),
+                    new SizeF(4f * sizeOfTheGridCell, sizeOfTheGridCell)), sizeOfTheGridCell / 2.5f,
+                StringAlignment.Far);
         }
 
         void ChangeThePausePicture(bool gameIsRunning) => pauseButton.BackgroundImage = pauseImages[gameIsRunning];
@@ -549,25 +542,24 @@ namespace Shooter
 
             DrawTheText(graphics, "Вы действительно хотите завершить игру?",
                 new RectangleF(new PointF(initialCoordinate.X + 9.5f * sizeOfTheGridCell, initialCoordinate.Y + sizeOfTheGridCell * 5.5f),
-                new SizeF(13 * sizeOfTheGridCell, sizeOfTheGridCell * 4f)), Brushes.LightGoldenrodYellow, new StringFormat()
-                { Alignment = StringAlignment.Center }, sizeOfTheGridCell / 1.2f);
+                new SizeF(13 * sizeOfTheGridCell, sizeOfTheGridCell * 4f)), sizeOfTheGridCell / 1.5f, StringAlignment.Center);
         }
 
         void RecalculateTheCoordinatesOfTheConfirmationWindow(object sender, EventArgs e)
         {
-            yesButton.Location = new Point((int)(initialCoordinate.X + sizeOfTheGridCell * 10.5f),
+            yesButton.Location = new Point((int)(initialCoordinate.X + sizeOfTheGridCell * 10.4f),
                 (int)(initialCoordinate.Y + sizeOfTheGridCell * 9.8));
             yesButton.Size = new Size() { Width = (int)(5 * sizeOfTheGridCell), Height = (int)(2 * sizeOfTheGridCell) };
 
             noButton.Size = yesButton.Size;
-            noButton.Location = new Point((int)(initialCoordinate.X + sizeOfTheGridCell * 16.5f),
+            noButton.Location = new Point((int)(initialCoordinate.X + sizeOfTheGridCell * 16.6f),
                 (int)(initialCoordinate.Y + sizeOfTheGridCell * 9.8));
 
             noButton.FlatAppearance.BorderSize = (int)sizeOfTheGridCell / 8;
             yesButton.FlatAppearance.BorderSize = (int)sizeOfTheGridCell / 8;
 
-            yesButton.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.5f, 1), FontStyle.Bold);
-            noButton.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.5f, 1), FontStyle.Bold);
+            yesButton.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.8f, 1), FontStyle.Bold);
+            noButton.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.8f, 1), FontStyle.Bold);
         }
         #endregion
 
@@ -585,7 +577,7 @@ namespace Shooter
 
             InitializeTheButtonsInTheResultsMenu();
 
-            RecalculateTheCoordinatesOfTheButtonsOfTheResetWindow("", new EventArgs());
+            RecalculateTheCoordinatesOfTheButtonsOfTheResetWindow(null, EventArgs.Empty);
             SizeChanged += RecalculateTheCoordinatesOfTheButtonsOfTheResetWindow;
 
             Paint += DrawTheResultsWindow;
@@ -651,16 +643,15 @@ namespace Shooter
             var graphics = e.Graphics;
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-            DrawAWindow(graphics, new Point((int)(initialCoordinate.X + 9.5 * sizeOfTheGridCell), (int)(initialCoordinate.Y + 5f * sizeOfTheGridCell)), new Size((int)(13 * sizeOfTheGridCell), (int)(6.5f * sizeOfTheGridCell)));
+            DrawAWindow(graphics, new Point((int)(initialCoordinate.X + 9.5 * sizeOfTheGridCell), (int)(initialCoordinate.Y + 5f * sizeOfTheGridCell)), new Size((int)(13 * sizeOfTheGridCell), (int)(7 * sizeOfTheGridCell)));
 
             DrawTheText(graphics, "Игра завершена!",
                 new RectangleF(new PointF(initialCoordinate.X + 9 * sizeOfTheGridCell, initialCoordinate.Y + sizeOfTheGridCell * 5.5f),
-                new SizeF(14 * sizeOfTheGridCell, sizeOfTheGridCell * 1.5f)), Brushes.Red, new StringFormat()
-                { Alignment = StringAlignment.Center }, sizeOfTheGridCell / 1.1f);
+                new SizeF(14 * sizeOfTheGridCell, sizeOfTheGridCell * 1.5f)), sizeOfTheGridCell / 1.5f,  StringAlignment.Center, FontStyle.Bold, Brushes.Red);
 
-            DrawTheText(graphics, String.Format("{0, -6} {1, 9}", "Счёт", model.NumberOfBotsDestroyed).Replace(' ', '.'),
-                new RectangleF(new PointF(initialCoordinate.X + sizeOfTheGridCell * 10.2f, initialCoordinate.Y + sizeOfTheGridCell * 7f),
-                new SizeF(14 * sizeOfTheGridCell, sizeOfTheGridCell * 1.3f)), Brushes.LightGoldenrodYellow, new StringFormat(), sizeOfTheGridCell / 1.34f);
+            DrawTheText(graphics, String.Format("{0, -7} {1, 9}", "Счёт", model.NumberOfBotsDestroyed).Replace(' ', '.'),
+                new RectangleF(new PointF(initialCoordinate.X + sizeOfTheGridCell * 10.5f, initialCoordinate.Y + sizeOfTheGridCell * 7f),
+                new SizeF(14 * sizeOfTheGridCell, sizeOfTheGridCell * 1.3f)), sizeOfTheGridCell / 1.8f);
 
             DrawAPicture(@"Images\star.png", new PointF(initialCoordinate.X + sizeOfTheGridCell * 20.6f, initialCoordinate.Y + 7.13f * sizeOfTheGridCell), new SizeF(sizeOfTheGridCell * 0.7f, sizeOfTheGridCell * 0.7f), graphics);
         }
@@ -669,7 +660,7 @@ namespace Shooter
         {
             buttonToGoToTheLevelSelection.Location = new Point((int)(initialCoordinate.X + sizeOfTheGridCell * 10.4f),
                 (int)(initialCoordinate.Y + sizeOfTheGridCell * 8.5));
-            buttonToGoToTheLevelSelection.Size = new Size() { Width = (int)(5 * sizeOfTheGridCell), Height = (int)(2.5 * sizeOfTheGridCell) };
+            buttonToGoToTheLevelSelection.Size = new Size() { Width = (int)(5.3 * sizeOfTheGridCell), Height = (int)(3 * sizeOfTheGridCell) };
 
             startOverButton.Size = buttonToGoToTheLevelSelection.Size;
             startOverButton.Location = new Point((int)(initialCoordinate.X + sizeOfTheGridCell * 16.3f),
@@ -678,9 +669,8 @@ namespace Shooter
             startOverButton.FlatAppearance.BorderSize = (int)sizeOfTheGridCell / 8;
             buttonToGoToTheLevelSelection.FlatAppearance.BorderSize = (int)sizeOfTheGridCell / 8; ;
 
-            buttonToGoToTheLevelSelection.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.5f, 1), FontStyle.Bold);
-            startOverButton.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.5f, 1), FontStyle.Bold);
-
+            buttonToGoToTheLevelSelection.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.8f, 1), FontStyle.Bold);
+            startOverButton.Font = new Font(new FontFamily("Courier New"), Math.Max(sizeOfTheGridCell / 1.8f, 1), FontStyle.Bold);
         }
         #endregion
 
@@ -725,19 +715,19 @@ namespace Shooter
                     .Select(line => string.Join("\t", line.Select(info => info.ToString()))));
         }
 
-        void DrawTheText(Graphics graphics, string text, RectangleF location, Brush brushes, StringFormat format, float fontSize)
+        static void DrawTheText(Graphics graphics, string text, RectangleF location, float fontSize, StringAlignment alignment = StringAlignment.Near, FontStyle outline = FontStyle.Regular, Brush brushes = null)
         {
-            graphics.DrawString(text, new Font("Courier New", Math.Max(fontSize, 1), FontStyle.Bold), brushes, location, format);
+            graphics.DrawString(text,
+                new Font("Courier New", Math.Max(fontSize, 1), outline),
+                brushes ?? Brushes.LightGoldenrodYellow,
+                location,
+                new StringFormat() { Alignment = alignment });
         }
 
-        void DrawAPicture(string pathToTheFile, PointF location, SizeF size, Graphics graphics)
+        static void DrawAPicture(string pathToTheFile, PointF location, SizeF size, Graphics graphics)
         {
-            graphics.DrawImage(Image.FromFile(pathToTheFile), new PointF[]
-            {
-                location,
-                new PointF(location.X + size.Width, location.Y),
-                new PointF(location.X, location.Y + size.Height)
-            });
+            graphics.DrawImage(Image.FromFile(pathToTheFile), 
+                [location, new(location.X + size.Width, location.Y), new(location.X, location.Y + size.Height)]);
         }
 
         void UpdateFieldValues(object sender, EventArgs e)
@@ -750,10 +740,9 @@ namespace Shooter
 
         PointF[] RecalculateTheCoordinatesOnTheForm(Point positionOnTheMap)
         {
-            return new PointF[] {
-                new PointF(positionOnTheMap.X * sizeOfTheGridCell + initialCoordinate.X, positionOnTheMap.Y * sizeOfTheGridCell + initialCoordinate.Y),
-                new PointF(positionOnTheMap.X * sizeOfTheGridCell + initialCoordinate.X + sizeOfTheGridCell, positionOnTheMap.Y * sizeOfTheGridCell + initialCoordinate.Y),
-                new PointF(positionOnTheMap.X * sizeOfTheGridCell + initialCoordinate.X, positionOnTheMap.Y * sizeOfTheGridCell + initialCoordinate.Y + sizeOfTheGridCell) };
+            return [ new(positionOnTheMap.X * sizeOfTheGridCell + initialCoordinate.X, positionOnTheMap.Y * sizeOfTheGridCell + initialCoordinate.Y),
+                new(positionOnTheMap.X * sizeOfTheGridCell + initialCoordinate.X + sizeOfTheGridCell, positionOnTheMap.Y * sizeOfTheGridCell + initialCoordinate.Y),
+                new(positionOnTheMap.X * sizeOfTheGridCell + initialCoordinate.X, positionOnTheMap.Y * sizeOfTheGridCell + initialCoordinate.Y + sizeOfTheGridCell) ];
         }
 
         PointF[] RotateAnArrayOfPoints(PointF[] points, double turn)
@@ -764,15 +753,10 @@ namespace Shooter
             var point2 = RotateAPoint(new PointF(points[1].X - centre.X, points[1].Y - centre.Y), turn);
             var point3 = RotateAPoint(new PointF(points[2].X - centre.X, points[2].Y - centre.Y), turn);
 
-            return new PointF[]
-            {
-                new PointF(centre.X + point1.X,centre.Y + point1.Y),
-                new PointF(centre.X + point2.X, centre.Y + point2.Y),
-                new PointF(centre.X + point3.X, centre.Y + point3.Y)
-            };
+            return [ new(centre.X + point1.X,centre.Y + point1.Y), new(centre.X + point2.X, centre.Y + point2.Y), new PointF(centre.X + point3.X, centre.Y + point3.Y) ];
         }
 
-        PointF RotateAPoint(PointF point, double angleInRadians)
+        static PointF RotateAPoint(PointF point, double angleInRadians)
         {
             var d = Math.Sqrt(point.X * point.X + point.Y * point.Y);
             var angle = Math.Atan2(point.Y, point.X) + angleInRadians;

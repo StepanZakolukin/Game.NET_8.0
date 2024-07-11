@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace WindowsForm.Model.GameEntities
+﻿namespace WindowsForm.Model.GameEntities
 {
     public class GameObjects
     {

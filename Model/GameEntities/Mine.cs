@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WindowsForm.Model.GameEntities
+﻿namespace WindowsForm.Model.GameEntities
 {
     public class Mine : GameObjects
     {

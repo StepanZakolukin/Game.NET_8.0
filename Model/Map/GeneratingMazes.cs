@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WindowsForm.Model.Map
+﻿namespace WindowsForm.Model.Map
 {
     public static class GeneratingMazes
     {

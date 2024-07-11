@@ -2,7 +2,7 @@ using WindowsForm.Model;
 using WindowsForm.Model.Map;
 
 
-namespace Shooter
+namespace Window
 {
     internal static class Program
     {
@@ -12,7 +12,7 @@ namespace Shooter
             ApplicationConfiguration.Initialize();
             Application.Run(new MyForm(
                 new GameModel(new Playground(0),
-                new WindowsForm.View.InfoAboutTheLevel(new[] { "0", "false", "1", "1", "1", "1", "1", "1" }))));
+                new WindowsForm.View.InfoAboutTheLevel([ "0", "false", "1", "1", "1", "1", "1", "1" ]))));
         }
     }
 }

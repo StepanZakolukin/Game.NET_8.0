@@ -14,30 +14,24 @@ namespace WindowsForm.Controller
         private Timer BotManagementTimer;
         private Timer BotCreationTimer;
 
-        public Controller(GameModel model) 
-        {
-            Model = model;
-        }
+        public Controller(GameModel model) => Model = model;
 
         public void ActivateTimers(int intervalForTheAppearanceOfBots)
         {
-            GameTimeTimer = new Timer();
-            GameTimeTimer.Interval = 1000;
+            GameTimeTimer = new() { Interval = 1000 };
             GameTimeTimer.Tick += (object sender, EventArgs args) => Model.AmountOfTimeUntilTheEndOfTheRound--;
             GameTimeTimer.Start();
 
-            MainTimer = new Timer();
+            MainTimer = new();
             MainTimer.Tick += UpdateTheModel;
             MainTimer.Start();
 
-            BotCreationTimer = new Timer();
-            BotCreationTimer.Interval = intervalForTheAppearanceOfBots;
+            BotCreationTimer = new() { Interval = intervalForTheAppearanceOfBots };
             BotCreationTimer.Tick += (object sender, EventArgs args) => Model.CreateAFirstAidKit();
             BotCreationTimer.Tick += (object sender, EventArgs args) => Model.CreateBots();
             BotCreationTimer.Start();
 
-            BotManagementTimer = new Timer();
-            BotManagementTimer.Interval = 300;
+            BotManagementTimer = new Timer() { Interval = 300 };
             BotManagementTimer.Tick += (object sender, EventArgs args) => Model.SetTheBotsInMotion(Model);
             BotManagementTimer.Start();
         }
