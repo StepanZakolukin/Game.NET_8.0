@@ -41,8 +41,8 @@ namespace Window
 
             pauseImages = new Dictionary<bool, Image>()
             {
-                [true] = Image.FromFile(@"Images\PauseTurnOn.png"),
-                [false] = Image.FromFile(@"Images\PauseTurnOff.png")
+                [true] = Image.FromFile(@"..\..\..\View\Images\PauseTurnOn.png"),
+                [false] = Image.FromFile(@"..\..\..\View\Images\PauseTurnOff.png")
             };
 
             //настройка WinForm
@@ -64,7 +64,7 @@ namespace Window
         void OpenTheMainMenu()
         {
             BackgroundImageLayout = ImageLayout.Zoom;
-            BackgroundImage = Image.FromFile(@"Images\MainMenu.jpg");
+            BackgroundImage = Image.FromFile(@"..\..\..\View\Images\MainMenu.jpg");
 
             playButton = new Button()
             {
@@ -119,7 +119,7 @@ namespace Window
                 Text = "i",
                 TextAlign = ContentAlignment.BottomCenter,
                 ForeColor = Color.LightGoldenrodYellow,
-                BackgroundImage = Image.FromFile(@"Images\Frame.png"),
+                BackgroundImage = Image.FromFile(@"..\..\..\View\Images\Frame.png"),
                 BackgroundImageLayout = ImageLayout.Zoom,
                 BackColor = Color.FromArgb(0, 0, 0, 0),
                 FlatStyle = FlatStyle.Flat
@@ -152,10 +152,10 @@ namespace Window
             {
                 LevelButtons[row, column].Text = string.Format("{0}\n\n{1, 5}", infoAboutTheLevels[row][column].Level,
                     $"{infoAboutTheLevels[row][column].Record}/{infoAboutTheLevels[row][column].PossibleNumberOfPoints}");
-                LevelButtons[row, column].BackgroundImage = Image.FromFile(@"Images\LevelIsOpen.png");
+                LevelButtons[row, column].BackgroundImage = Image.FromFile(@"..\..\..\View\Images\LevelIsOpen.png");
                 LevelButtons[row, column].Click += LevelTriggerFunctions[row, column];
             }
-            else LevelButtons[row, column].BackgroundImage = Image.FromFile(@"Images\LevelIsClosed.png");
+            else LevelButtons[row, column].BackgroundImage = Image.FromFile(@"..\..\..\View\Images\LevelIsClosed.png");
 
             LevelButtons[row, column].FlatAppearance.MouseDownBackColor = Color.Black;
             Controls.Add(LevelButtons[row, column]);
@@ -219,11 +219,11 @@ namespace Window
         {
             CloseTheLevelSelectionWindow();
 
-            BackgroundImage = Image.FromFile(@"Images\info.png");
+            BackgroundImage = Image.FromFile(@"..\..\..\View\Images\info.png");
 
             backButton = new Button()
             {
-                BackgroundImage = Image.FromFile(@"Images\BackButton.png"),
+                BackgroundImage = Image.FromFile(@"..\..\..\View\Images\BackButton.png"),
                 BackgroundImageLayout = ImageLayout.Zoom,
                 BackColor = Color.FromArgb(0, 0, 0, 0),
                 FlatStyle = FlatStyle.Flat
@@ -331,7 +331,7 @@ namespace Window
             exitButton = new Button()
             {
                 BackColor = Color.FromArgb(0, 0, 0, 0),
-                BackgroundImage = Image.FromFile(@"Images\Exit.png"),
+                BackgroundImage = Image.FromFile(@"..\..\..\View\Images\Exit.png"),
                 BackgroundImageLayout = ImageLayout.Zoom,
                 FlatStyle = FlatStyle.Flat
             };
@@ -415,14 +415,14 @@ namespace Window
 
             DisplayTheTextOnTheGamePanel(graphics);
 
-            DrawAPicture(@"Images\star.png", new PointF(initialCoordinate.X + 18.9f * sizeOfTheGridCell,
+            DrawAPicture(@"..\..\..\View\Images\star.png", new PointF(initialCoordinate.X + 18.9f * sizeOfTheGridCell,
                 initialCoordinate.Y - sizeOfTheGridCell * 0.7f), new SizeF(sizeOfTheGridCell * 0.7f, sizeOfTheGridCell * 0.7f), graphics);
 
             for (var i = 0; i < model.Player.Health; i++)
-                DrawAPicture(@"Images\heart.png", new PointF(initialCoordinate.X + i * sizeOfTheGridCell,
+                DrawAPicture(@"..\..\..\View\Images\heart.png", new PointF(initialCoordinate.X + i * sizeOfTheGridCell,
                     initialCoordinate.Y - sizeOfTheGridCell * 0.7f), new SizeF(sizeOfTheGridCell * 0.7f, sizeOfTheGridCell * 0.7f), graphics);
 
-            DrawAPicture(@"Images\Timer.png", new PointF(initialCoordinate.X + 8.1f * sizeOfTheGridCell,
+            DrawAPicture(@"..\..\..\View\Images\Timer.png", new PointF(initialCoordinate.X + 8.1f * sizeOfTheGridCell,
                 initialCoordinate.Y - sizeOfTheGridCell * 0.7f), new SizeF(sizeOfTheGridCell * 0.7f, sizeOfTheGridCell * 0.7f), graphics);
         }
 
@@ -653,7 +653,7 @@ namespace Window
                 new RectangleF(new PointF(initialCoordinate.X + sizeOfTheGridCell * 10.5f, initialCoordinate.Y + sizeOfTheGridCell * 7f),
                 new SizeF(14 * sizeOfTheGridCell, sizeOfTheGridCell * 1.3f)), sizeOfTheGridCell / 1.8f);
 
-            DrawAPicture(@"Images\star.png", new PointF(initialCoordinate.X + sizeOfTheGridCell * 20.6f, initialCoordinate.Y + 7.13f * sizeOfTheGridCell), new SizeF(sizeOfTheGridCell * 0.7f, sizeOfTheGridCell * 0.7f), graphics);
+            DrawAPicture(@"..\..\..\View\Images\star.png", new PointF(initialCoordinate.X + sizeOfTheGridCell * 20.6f, initialCoordinate.Y + 7.13f * sizeOfTheGridCell), new SizeF(sizeOfTheGridCell * 0.7f, sizeOfTheGridCell * 0.7f), graphics);
         }
 
         void RecalculateTheCoordinatesOfTheButtonsOfTheResetWindow(object sender, EventArgs e)
@@ -678,14 +678,14 @@ namespace Window
 
         void DrawAWindow(Graphics graphics, Point startingPoint, Size size)
         {
-            DrawAPicture(@"Images\haze.png", new PointF(0, 0), ClientSize, graphics);
+            DrawAPicture(@"..\..\..\View\Images\haze.png", new PointF(0, 0), ClientSize, graphics);
 
             graphics.DrawRectangle(new Pen(Color.LightGoldenrodYellow, sizeOfTheGridCell / 5), new Rectangle(startingPoint, size));
         }
 
         InfoAboutTheLevel[][] ReadTheSavedData()
         {
-            return File.ReadAllText(@"LevelData.txt").Split('\n')
+            return File.ReadAllText(@"..\..\..\View\LevelData.txt").Split('\n')
                 .Take(LevelButtons.GetLength(0))
                 .Select(line => line.Split('\t').Select(str => str.Split(';')))
                 .Select(line => line.Select(array => new InfoAboutTheLevel(array)).ToArray())
@@ -711,7 +711,7 @@ namespace Window
         {
             RecordTheResults();
 
-            File.WriteAllLines(@"LevelData.txt", infoAboutTheLevels
+            File.WriteAllLines(@"..\..\..\View\LevelData.txt", infoAboutTheLevels
                     .Select(line => string.Join("\t", line.Select(info => info.ToString()))));
         }
 

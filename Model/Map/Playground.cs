@@ -23,7 +23,7 @@ namespace WindowsForm.Model.Map
         {
             var result = new string[Width, Height];
 
-            var map = File.ReadAllText(@"Map.txt").Split('\n')
+            var map = File.ReadAllText(@"..\..\..\View\Map.txt").Split('\n')
                 .Select(st => st.Split('\t'))
                 .ToArray();
 

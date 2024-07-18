@@ -2,7 +2,7 @@
 {
     public class Bullet : GameObjects
     {
-        public Bullet(int angleInDegrees, Point location, string pathToTheFile = @"Images\Bullet.png", int health = 1)
+        public Bullet(int angleInDegrees, Point location, string pathToTheFile = @"..\..\..\View\Images\Bullet.png", int health = 1)
             : base(location, pathToTheFile, health, 1, 2)
         {
             AngleInDegrees = angleInDegrees;
